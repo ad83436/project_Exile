@@ -11,17 +11,19 @@ public class Player : Souls
     private void Awake()
     {
         plyInv = new Inventory();
-        uiInventory.SetInventory(plyInv);
+
     }
     // Start is called before the first frame update
     void Start()
     {
         curntHealth_ = maxHealth_ = 100.0f;
         damage_ = 10.0f;
+        uiInventory.SetInventory(plyInv);
+        uiInventory.invBackground.SetActive(false);
+        uiInventory.GetItemSlotContainer().SetActive(false);
         StartUp();
-        
-        
     }
+
     // Update is called once per frame
     void Update()
     {

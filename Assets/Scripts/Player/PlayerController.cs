@@ -23,7 +23,7 @@ public class PlayerController : Souls
     public bool isMouseAndKeyboard { get; private set; }
     public bool isInteracting { get; private set; }
 
-    bool inventoryOpen = false;
+    bool isInventoryOpen = false;
 
 
     int aimChecker = -1; // used so the player only goes into the aim animation once 
@@ -111,7 +111,6 @@ public class PlayerController : Souls
         Move();
         Aim();
         PlayerReload();
-        Debug.Log(isFiring);
     }
 
     private void Move()
@@ -263,19 +262,22 @@ public class PlayerController : Souls
 
     public void OpenInventory(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed)
+        if (ctx.performed && !isInventoryOpen)
         {
+            isInventoryOpen = true;
             _input.Gamepad.Disable();
-            _input.InventoryUI.Enable();
             player.GetInvetoryUI().invBackground.SetActive(true);
-            Debug.Log("inventory should open ");
+            player.GetInvetoryUI().GetItemSlotContainer().SetActive(true);
+            Debug.Log("inventory should open");
         }
-        else if (ctx.canceled)
+
+        else if (ctx.performed && isInventoryOpen)
         {
+            isInventoryOpen = false;
             _input.Gamepad.Enable();
-            _input.InventoryUI.Disable();
             player.GetInvetoryUI().invBackground.SetActive(false);
-            Debug.Log("inventory should closess ");
+            player.GetInvetoryUI().GetItemSlotContainer().SetActive(false);
+            Debug.Log("inventory should close");
         }
     }
 }
